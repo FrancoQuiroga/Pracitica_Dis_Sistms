@@ -1,0 +1,331 @@
+Sistema de Gestión de Flota Autónoma
+
+Sistema integral de gestión de una flota de vehículos autónomos para delivery urbano. Este proyecto demuestra la implementación de múltiples patrones de diseño de software (Singleton, Factory, Observer, Strategy, Registry) en Python, con un enfoque en la arquitectura limpia, desacoplamiento y extensibilidad.
+
+Tabla de Contenidos
+
+Contexto del Dominio
+
+Características Principales
+
+Arquitectura del Sistema
+
+Patrones de Diseño Implementados
+
+Requisitos del Sistema
+
+Instalación
+
+Uso del Sistema
+
+Estructura del Proyecto
+
+Módulos del Sistema (Patrones en Detalle)
+
+Testing y Validación
+
+Cómo Extender el Sistema
+
+Licencia
+
+Contacto y Soporte
+
+Notas Adicionales
+
+Contexto del Dominio
+
+El proyecto simula el software de back-end para una compañía de logística urbana que opera una flota mixta de vehículos autónomos. El sistema debe gestionar:
+
+Vehículos Diversos: Drones de entrega rápida, robots terrestres de acera, furgonetas autónomas de carga y bicicletas autónomas.
+
+Infraestructura: Estaciones Base (Hubs) para carga y mantenimiento.
+
+Operaciones: Asignación de misiones de delivery y mantenimiento.
+
+Entorno Dinámico: El sistema debe reaccionar a eventos en tiempo real, como alertas de tráfico, condiciones climáticas adversas y niveles bajos de batería.
+
+Características Principales
+
+Gestión de Infraestructura: Registro de Estaciones Base y Flotas (US-101, US-102).
+
+Gestión de Vehículos (Factory): Creación de múltiples tipos de vehículos (Drones, Robots, etc.) (Epic 2).
+
+Sistema de Monitoreo (Observer): Reacción a eventos de Tráfico, Clima y Batería (Epic 3).
+
+Sistema de Navegación (Strategy): Algoritmos de ruteo intercambiables (Rápido, Ecológico, Seguro) (US-304).
+
+Gestión de Operadores: Registro de técnicos y asignación de misiones de mantenimiento basadas en certificaciones (Epic 4).
+
+Operaciones Polimórficas (Registry): Ejecución de misiones específicas (ej. despegar() de un Dron) sin usar condicionales if/isinstance.
+
+Persistencia: Almacenamiento y recuperación de bitácoras de misiones (US-503, US-504).
+
+Arquitectura del Sistema
+
+La arquitectura sigue el principio de Separación de Responsabilidades, dividiendo el sistema en dos paquetes principales: entidades y servicios.
+
+entidades/ (Modelos de Datos): Contiene las clases que representan los "sustantivos" del dominio (ej. Vehiculo, EstacionBase). No contienen lógica de negocio compleja.
+
+servicios/ (Lógica de Negocio): Contiene los "casos de uso" (ej. FlotaService, OperadorService). Estas clases orquestan las entidades para realizar tareas.
+
+Ambos paquetes están subdivididos por Dominio (infraestructura, vehiculos, operadores) para mantener el código organizado y desacoplado.
+
+[ python_autonomous_fleet ]
+│
+├── [ entidades ]
+│   ├── [ infraestructura ] (EstacionBase, Flota)
+│   ├── [ operadores ]      (Operador, Mision)
+│   ├── [ patrones ]        (Factory, Observer, Strategy)
+│   └── [ vehiculos ]       (Vehiculo, Dron, Robot)
+│
+├── [ excepciones ]         (Excepciones personalizadas)
+│
+└── [ servicios ]
+    ├── [ infraestructura ] (FlotaService, BitacoraService)
+    ├── [ operadores ]      (OperadorService)
+    ├── [ operaciones ]     (Orquestador - FlotaOperationsService)
+    └── [ vehiculos ]       (VehicleServiceRegistry - Singleton/Registry)
+
+
+Patrones de Diseño Implementados
+
+Este proyecto es un análogo directo del "Sistema de Gestión Forestal", aplicando los mismos patrones a un nuevo dominio:
+
+Patrón
+
+Implementación (Forestación)
+
+Implementación (Flota Autónoma)
+
+Propósito
+
+Singleton
+
+CultivoServiceRegistry
+
+VehicleServiceRegistry
+
+Asegurar una única instancia del registro de servicios.
+
+Factory
+
+CultivoFactory
+
+VehicleFactory
+
+Crear diferentes tipos de vehículos (Dron, Robot) sin que el cliente conozca las clases concretas.
+
+Observer
+
+Sensor (Humedad)
+
+ServicioTrafico, ServicioClima, Vehiculo (Batería)
+
+Notificar a múltiples objetos (vehículos, estaciones) sobre eventos (tráfico, batería baja) en tiempo real.
+
+Strategy
+
+AbsorcionStrategy (Agua)
+
+RuteoStrategy (Rápido, Eco)
+
+Permitir que un vehículo cambie su algoritmo de navegación en tiempo de ejecución.
+
+Registry
+
+CultivoServiceRegistry
+
+VehicleServiceRegistry
+
+Centralizar el "dispatch polimórfico" para ejecutar operaciones específicas de cada tipo de vehículo.
+
+Requisitos del Sistema
+
+Python 3.10+ (Requerido para los type hints modernos, ej. Vehiculo | None).
+
+No se requieren bibliotecas externas (solo bibliotecas estándar de Python).
+
+Instalación
+
+No se requiere instalación de paquetes. Simplemente clona o descarga el repositorio:
+
+git clone [URL_DEL_REPOSITORIO]
+cd [NOMBRE_DEL_PROYECTO]
+
+
+Uso del Sistema
+
+El proyecto se ejecuta a través del script main.py, que actúa como el ensamblador principal y demuestra todos los casos de uso y patrones de diseño.
+
+# Ejecuta la demostracion completa
+python main.py
+
+
+El script main.py está dividido en 8 secciones que coinciden con las del proyecto original, demostrando la creación de infraestructura, el uso de patrones y la persistencia.
+
+Estructura del Proyecto
+
+proyecto_flota_autonoma/
+│
+├── python_autonomous_fleet/
+│   │
+│   ├── __init__.py
+│   │
+│   ├── excepciones/
+│   │   ├── __init__.py
+│   │   ├── excepciones_infra.py
+│   │   ├── excepciones_operador.py
+│   │   └── excepciones_vehiculo.py
+│   │
+│   ├── entidades/
+│   │   ├── __init__.py
+│   │   ├── infraestructura/
+│   │   │   ├── __init__.py
+│   │   │   ├── estacion_base.py
+│   │   │   ├── flota.py
+│   │   │   └── bitacora_mision.py
+│   │   │
+│   │   ├── operadores/
+│   │   │   ├── __init__.py
+│   │   │   ├── certificacion.py
+│   │   │   ├── mision.py
+│   │   │   └── operador.py
+│   │   │
+│   │   ├── patrones/
+│   │   │   ├── __init__.py
+│   │   │   ├── factory/
+│   │   │   │   ├── __init__.py
+│   │   │   │   └── vehicle_factory.py
+│   │   │   ├── observer/
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── observer_interface.py
+│   │   │   │   └── servicio_externo.py
+│   │   │   └── strategy/
+│   │   │       ├── __init__.py
+│   │   │       └── ruteo_strategy.py
+│   │   │
+│   │   └── vehiculos/
+│   │       ├── __init__.py
+│   │       ├── bicicleta_autonoma.py
+│   │       ├── dron_entrega.py
+│   │       ├── furgoneta_autonoma.py
+│   │       ├── robot_terrestre.py
+│   │       └── vehiculo.py
+│   │
+│   └── servicios/
+│       ├── __init__.py
+│       ├── infraestructura/
+│       │   ├── __init__.py
+│       │   ├── bitacora_service.py
+│       │   ├── estacion_base_service.py
+│       │   └── flota_service.py
+│       │
+│       ├── operadores/
+│       │   ├── __init__.py
+│       │   └── operador_service.py
+│       │
+│       ├── operaciones/
+│       │   ├── __init__.py
+│       │   └── flota_operations_service.py
+│       │
+│       └── vehiculos/
+│           ├── __init__.py
+│           └── vehicle_service_registry.py
+│
+├── main.py                     <-- (Punto de entrada principal)
+├── evaluador_automatico.py     <-- (Script de testing de arquitectura)
+├── config_flota.json           <-- (Configuracion para el evaluador)
+├── README.md                   <-- (Este archivo)
+├── USER_STORIES.md             <-- (Casos de uso del proyecto)
+└── requirements.txt            (Vacio, sin dependencias)
+
+
+Módulos del Sistema (Patrones en Detalle)
+
+1. Factory (Creación de Vehículos)
+
+VehicleFactory: (entidades/patrones/factory/)
+
+Propósito: Desacopla al FlotaService de la creación de vehículos. Para agregar un nuevo tipo de vehículo (ej. ScooterAutonomo), solo se necesita modificar el Factory.
+
+Uso: FlotaService llama a VehicleFactory.crear_vehiculo("DronEntrega", ...)
+
+2. Observer (Sensores y Batería)
+
+Observer/Observable: (entidades/patrones/observer/)
+
+Propósito: Permite una comunicación desacoplada basada en eventos.
+
+Implementación A (Sensores): ServicioTrafico (Observable) notifica a Vehiculo (Observer) sobre un evento de congestión (US-301).
+
+Implementación B (Batería): Vehiculo (Observable) notifica a EstacionBase (Observer) sobre un evento de batería baja (US-303).
+
+3. Strategy (Algoritmos de Ruteo)
+
+RuteoStrategy: (entidades/patrones/strategy/)
+
+Propósito: Permite que un objeto Vehiculo cambie su comportamiento (el algoritmo de cálculo de ruta) en tiempo de ejecución.
+
+Uso: v_furgoneta.set_ruteo_strategy(RutaEcoStrategy()) cambia el algoritmo para priorizar el ahorro de batería (US-304).
+
+4. Singleton & Registry (Servicios Polimórficos)
+
+VehicleServiceRegistry: (servicios/vehiculos/)
+
+Propósito:
+
+Singleton: Garantiza que solo exista una instancia de este registro en toda la aplicación (US-T04).
+
+Registry: Mapea un tipo de vehículo (ej. "DronEntrega") a un "handler" o servicio específico (ej. dron_handler) (US-T05).
+
+Uso: El FlotaOperationsService (orquestador) usa el Registry para ejecutar misiones sin usar if/elif sobre el tipo de vehículo.
+
+self._registry.ejecutar_mision_polimorfica(vehiculo, ...)
+
+Testing y Validación
+
+El proyecto incluye un script de evaluación automática para verificar el cumplimiento de la arquitectura y los patrones de diseño (requisito de la rúbrica de evaluación).
+
+# Ejecutar la evaluacion (requiere Python)
+python evaluador_automatico.py --config config_flota.json
+
+
+Este script utiliza el archivo config_flota.json para ejecutar comandos findstr y dir (versión de Windows) y verificar estáticamente que todos los patrones y estructuras de archivos estén en su lugar, generando un puntaje de aprobación.
+
+Cómo Extender el Sistema
+
+Ejemplo: Agregar un nuevo Vehículo (ej. "ScooterAutonomo")
+
+Gracias a los patrones Factory y Registry, agregar un nuevo tipo de vehículo es sencillo:
+
+Crear la Entidad:
+Crea el archivo python_autonomous_fleet/entidades/vehiculos/scooter_autonomo.py. La clase debe heredar de Vehiculo.
+
+from .vehiculo import Vehiculo
+# ...
+class ScooterAutonomo(Vehiculo):
+    def __init__(self, id_vehiculo, ruteo_strategy_inicial):
+        super().__init__(id_vehiculo, "ScooterAutonomo", ruteo_strategy_inicial)
+        # ... atributos especificos
+    def describir(self):
+        return "Scooter de delivery..."
+
+
+Registrar en el Factory:
+Edita entidades/patrones/factory/vehicle_factory.py:
+
+# Importar la nueva clase
+from python_autonomous_fleet.entidades.vehiculos.scooter_autonomo import ScooterAutonomo
+
+class VehicleFactory:
+    @staticmethod
+    def crear_vehiculo(tipo_vehiculo: str, id_vehiculo: str) -> Vehiculo:
+        # ...
+        elif tipo_vehiculo == "BicicletaAutonoma":
+            return BicicletaAutonoma(id_vehiculo, strategy_default)
+        # --- AGREGAR ---
+        elif tipo_vehiculo == "ScooterAutonomo":
+            return ScooterAutonomo(id_vehiculo, strategy_default)
+        # --- FIN ---
+        else:
+            raise ValueError(...)
