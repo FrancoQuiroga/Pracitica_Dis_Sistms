@@ -1,0 +1,227 @@
+{
+  "calificacion": {
+    "min_aprobacion": 70,
+    "rangos": [
+      { "nombre": "Excelente", "min_porcentaje": 90 },
+      { "nombre": "Muy Bueno", "min_porcentaje": 80 },
+      { "nombre": "Bueno", "min_porcentaje": 70 },
+      { "nombre": "Suficiente", "min_porcentaje": 60 }
+    ]
+  },
+  "evaluacion": [
+    {
+      "categoria": "Arquitectura (Estructura)",
+      "criterios": [
+        {
+          "id": "ARC-001",
+          "descripcion": "Existe el paquete raiz 'python_autonomous_fleet'",
+          "comando": "dir /s /b /ad python_autonomous_fleet | findstr \"python_autonomous_fleet\"",
+          "threshold": 1,
+          "puntaje": 10
+        },
+        {
+          "id": "ARC-002",
+          "descripcion": "Existe el directorio 'entidades'",
+          "comando": "dir /s /b /ad .\\python_autonomous_fleet\\entidades",
+          "threshold": 1,
+          "puntaje": 5
+        },
+        {
+          "id": "ARC-003",
+          "descripcion": "Existe el directorio 'servicios'",
+          "comando": "dir /s /b /ad .\\python_autonomous_fleet\\servicios",
+          "threshold": 1,
+          "puntaje": 5
+        },
+        {
+          "id": "ARC-004",
+          "descripcion": "Dominios de 'entidades' (infra, vehiculos, operadores)",
+          "comando": "dir /ad /b .\\python_autonomous_fleet\\entidades | findstr /i \"infraestructura vehiculos operadores\"",
+          "threshold": 3,
+          "puntaje": 6
+        },
+        {
+          "id": "ARC-005",
+          "descripcion": "Dominios de 'servicios' (infra, vehiculos, operadores, operaciones)",
+          "comando": "dir /ad /b .\\python_autonomous_fleet\\servicios | findstr /i \"infraestructura vehiculos operadores operaciones\"",
+          "threshold": 4,
+          "puntaje": 8
+        },
+        {
+          "id": "ARC-006",
+          "descripcion": "Existe el directorio de patrones",
+          "comando": "dir /s /b /ad .\\python_autonomous_fleet\\entidades\\patrones",
+          "threshold": 1,
+          "puntaje": 5
+        },
+        {
+          "id": "ARC-007",
+          "descripcion": "Existe el directorio de excepciones",
+          "comando": "dir /s /b /ad .\\python_autonomous_fleet\\excepciones",
+          "threshold": 1,
+          "puntaje": 5
+        }
+      ]
+    },
+    {
+      "categoria": "Patron Singleton",
+      "criterios": [
+        {
+          "id": "SING-001",
+          "descripcion": "Implementacion de atributo '_instance'",
+          "comando": "findstr /i \"_instance = None\" .\\python_autonomous_fleet\\servicios\\vehiculos\\vehicle_service_registry.py",
+          "threshold": 1,
+          "puntaje": 5
+        },
+        {
+          "id": "SING-002",
+          "descripcion": "Implementacion de metodo 'get_instance()'",
+          "comando": "findstr /i \"def get_instance(cls)\" .\\python_autonomous_fleet\\servicios\\vehiculos\\vehicle_service_registry.py",
+          "threshold": 1,
+          "puntaje": 5
+        },
+        {
+          "id": "SING-003",
+          "descripcion": "Uso del Singleton en el orquestador (FlotaOperationsService)",
+          "comando": "findstr /i \"VehicleServiceRegistry.get_instance()\" .\\python_autonomous_fleet\\servicios\\operaciones\\flota_operations_service.py",
+          "threshold": 1,
+          "puntaje": 5
+        }
+      ]
+    },
+    {
+      "categoria": "Patron Factory",
+      "criterios": [
+        {
+          "id": "FACT-001",
+          "descripcion": "Existe la clase 'VehicleFactory'",
+          "comando": "findstr /i \"class VehicleFactory\" .\\python_autonomous_fleet\\entidades\\patrones\\factory\\vehicle_factory.py",
+          "threshold": 1,
+          "puntaje": 5
+        },
+        {
+          "id": "FACT-002",
+          "descripcion": "Implementacion de metodo 'crear_vehiculo'",
+          "comando": "findstr /i \"def crear_vehiculo\" .\\python_autonomous_fleet\\entidades\\patrones\\factory\\vehicle_factory.py",
+          "threshold": 1,
+          "puntaje": 5
+        },
+        {
+          "id": "FACT-003",
+          "descripcion": "Uso del Factory en 'FlotaService'",
+          "comando": "findstr /i \"VehicleFactory.crear_vehiculo\" .\\python_autonomous_fleet\\servicios\\infraestructura\\flota_service.py",
+          "threshold": 1,
+          "puntaje": 5
+        }
+      ]
+    },
+    {
+      "categoria": "Patron Observer",
+      "criterios": [
+        {
+          "id": "OBS-001",
+          "descripcion": "Implementacion de 'suscribir'",
+          "comando": "findstr /s /i \"def suscribir\" .\\python_autonomous_fleet\\entidades\\patrones\\observer\\*.py",
+          "threshold": 2,
+          "puntaje": 4
+        },
+        {
+          "id": "OBS-002",
+          "descripcion": "Implementacion de 'notificar'",
+          "comando": "findstr /s /i \"def notificar\" .\\python_autonomous_fleet\\entidades\\patrones\\observer\\*.py",
+          "threshold": 2,
+          "puntaje": 4
+        },
+        {
+          "id": "OBS-003",
+          "descripcion": "Implementacion de 'actualizar'",
+          "comando": "findstr /s /i \"def actualizar\" .\\python_autonomous_fleet\\entidades\\*",
+          "threshold": 3,
+          "puntaje": 4
+        },
+        {
+          "id": "OBS-004",
+          "descripcion": "Uso de 'suscribir' en 'FlotaService' (Estacion observa Vehiculo)",
+          "comando": "findstr /i \"vehiculo.suscribir(estacion_base)\" .\\python_autonomous_fleet\\servicios\\infraestructura\\flota_service.py",
+          "threshold": 1,
+          "puntaje": 4
+        },
+        {
+          "id": "OBS-005",
+          "descripcion": "Uso de 'notificar' en 'Vehiculo' (Bateria baja)",
+          "comando": "findstr /i \"self.notificar(evento)\" .\\python_autonomous_fleet\\entidades\\vehiculos\\vehiculo.py",
+          "threshold": 1,
+          "puntaje": 4
+        }
+      ]
+    },
+    {
+      "categoria": "Patron Strategy",
+      "criterios": [
+        {
+          "id": "STRAT-001",
+          "descripcion": "Existe la interfaz 'RuteoStrategy'",
+          "comando": "findstr /i \"class RuteoStrategy(ABC)\" .\\python_autonomous_fleet\\entidades\\patrones\\strategy\\ruteo_strategy.py",
+          "threshold": 1,
+          "puntaje": 5
+        },
+        {
+          "id": "STRAT-002",
+          "descripcion": "Existen al menos 2 estrategias concretas",
+          "comando": "findstr /i \"class\" .\\python_autonomous_fleet\\entidades\\patrones\\strategy\\ruteo_strategy.py | findstr \"(RuteoStrategy)\"",
+          "threshold": 3,
+          "puntaje": 5
+        },
+        {
+          "id": "STRAT-003",
+          "descripcion": "Implementacion de 'set_ruteo_strategy' en Vehiculo",
+          "comando": "findstr /i \"def set_ruteo_strategy\" .\\python_autonomous_fleet\\entidades\\vehiculos\\vehiculo.py",
+          "threshold": 1,
+          "puntaje": 5
+        },
+        {
+          "id": "STRAT-004",
+          "descripcion": "Uso de 'set_ruteo_strategy' en main.py",
+          "comando": "findstr /i \"set_ruteo_strategy\" .\\main.py",
+          "threshold": 1,
+          "puntaje": 5
+        }
+      ]
+    },
+    {
+      "categoria": "Patron Registry",
+      "criterios": [
+        {
+          "id": "REG-001",
+          "descripcion": "Implementacion de 'registrar_servicio'",
+          "comando": "findstr /i \"def registrar_servicio\" .\\python_autonomous_fleet\\servicios\\vehiculos\\vehicle_service_registry.py",
+          "threshold": 1,
+          "puntaje": 5
+        },
+        {
+          "id": "REG-002",
+          "descripcion": "Implementacion de 'get_servicio'",
+          "comando": "findstr /i \"def get_servicio\" .\\python_autonomous_fleet\\servicios\\vehiculos\\vehicle_service_registry.py",
+          "threshold": 1,
+          "puntaje": 5
+        },
+        {
+          "id": "REG-003",
+          "descripcion": "Uso de 'ejecutar_mision_polimorfica' (que usa el Registry) en main.py",
+          "comando": "findstr /i \"ejecutar_mision_delivery_polimorfica\" .\\main.py",
+          "threshold": 1,
+          "puntaje": 5
+        },
+        {
+          "id": "REG-004",
+          "descripcion": "Ausencia de 'isinstance' o 'if type()==' para polimorfismo en el Orquestador",
+          "comando": "findstr /s /i \"isinstance\" .\\python_autonomous_fleet\\servicios\\operaciones\\flota_operations_service.py",
+          "threshold": 0,
+          "puntaje": 5,
+          "inverted": true
+        }
+      ]
+    }
+  ]
+}
+

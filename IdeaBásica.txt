@@ -1,0 +1,52 @@
+Sistema de Gestión de Flota de Vehículos Autónomos
+Contexto del Dominio
+Gestión de una flota de vehículos autónomos para delivery urbano, donde cada vehículo tiene diferentes características, sensores, y capacidades de carga.
+
+Adaptación de Patrones
+Patrón Original	Nueva Aplicación
+Singleton	VehicleServiceRegistry - Registro único de servicios de vehículos
+Factory Method	VehicleFactory - Crear diferentes tipos de vehículos (drones, robots, furgonetas)
+Observer	Sensores de tráfico, clima y estado de batería en tiempo real
+Strategy	Algoritmos de ruteo (más rápido, más económico, más seguro)
+Registry	Dispatch polimórfico para diferentes tipos de vehículos
+
+
+Historias de Usuario Adaptadas
+Epic 1: Gestión de Vehículos y Estaciones
+US-001: Registrar estación de carga con capacidad energética
+
+US-002: Crear flota de vehículos asociada a estación
+
+US-003: Crear registro completo de flota
+
+Epic 2: Gestión de Tipos de Vehículos
+US-004: Agregar drones de entrega rápida
+
+US-005: Agregar robots terrestres para corta distancia
+
+US-006: Agregar furgonetas autónomas para carga pesada
+
+US-007: Agregar bicicletas autónomas para zonas peatonales
+
+Epic 3: Sistema de Navegación Automatizado
+US-010: Monitorear tráfico en tiempo real
+
+US-011: Monitorear condiciones climáticas
+
+US-012: Navegación automática basada en sensores
+
+Epic 4: Gestión de Operadores
+US-014: Registrar operador con certificaciones
+
+US-015: Asignar licencia de operación
+
+US-016: Ejecutar misiones de delivery
+
+Características Únicas
+Carga energética en lugar de agua
+
+Algoritmos de ruteo en lugar de absorción de agua
+
+Sensores de tráfico y clima
+
+Gestión de batería y autonomía
